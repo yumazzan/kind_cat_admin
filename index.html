@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIND CAT - Image Setup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: #1A1A1A;
+            min-height: 100vh;
+            color: #FFFFFF;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #FFB3D9 0%, #B794F6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+        }
+
+        h1 {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #C9395A;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: #2D3436;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #3D4446;
+        }
+
+        .section-title {
+            color: #C9395A;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .image-card {
+            background: #1A1A1A;
+            border: 2px solid #3D4446;
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .image-card:hover {
+            border-color: #C9395A;
+            transform: translateY(-5px);
+        }
+
+        .image-preview {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #3D4446;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-placeholder {
+            color: #6C7A7D;
+            text-align: center;
+            font-size: 3em;
+        }
+
+        .image-info {
+            margin-bottom: 10px;
+        }
+
+        .image-label {
+            font-size: 0.85em;
+            color: #6C7A7D;
+            margin-bottom: 5px;
+        }
+
+        .image-value {
+            font-size: 1.1em;
+            color: #FFB3D9;
+            font-weight: bold;
+        }
+
+        .upload-btn {
+            width: 100%;
+            padding: 10px;
+            background: #C9395A;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #7D1E3A;
+            transform: translateY(-2px);
+        }
+
+        .input-field {
+            width: 100%;
+            background: #1A1A1A;
+            border: 2px solid #3D4446;
+            color: #FFFFFF;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #C9395A;
+        }
+
+        .help-text {
+            background: rgba(201, 57, 90, 0.1);
+            border: 1px solid #C9395A;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+
+        .help-text strong {
+            color: #E8749B;
+        }
+
+        .code-block {
+            background: #1A1A1A;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid #3D4446;
+        }
+
+        .copy-btn {
+            padding: 8px 15px;
+            background: #E8749B;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #C9395A;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            background: transparent;
+            border: 2px solid #3D4446;
+            border-radius: 8px;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: #C9395A;
+            border-color: #C9395A;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .remove-btn {
+            width: 100%;
+            padding: 8px;
+            background: transparent;
+            border: 1px solid #C9395A;
+            border-radius: 6px;
+            color: #C9395A;
+            font-size: 0.85em;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .remove-btn:hover {
+            background: rgba(201, 57, 90, 0.2);
+        }
+
+        .export-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .export-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #C9395A 0%, #7D1E3A 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(201, 57, 90, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🐱</div>
+            <h1>KIND CAT</h1>
+            <p class="subtitle">이미지 등록 및 관리 시스템</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📸 일러스트 설정</div>
+            
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('url')">URL 방식</button>
+                <button class="tab-btn" onclick="switchTab('upload')">파일 업로드</button>
+            </div>
+
+            <div id="url-tab" class="tab-content active">
+                <div class="help-text">
+                    <strong>URL 방식 (추천)</strong><br>
+                    • 이미지를 Imgur, Google Drive, 또는 다른 호스팅 서비스에 업로드<br>
+                    • 이미지의 직접 링크(URL)를 복사<br>
+                    • 아래에서 각 호감도 구간별로 URL 입력<br>
+                    • 장점: 파일 크기 제한 없음, 쉬운 관리
+                </div>
+            </div>
+
+            <div id="upload-tab" class="tab-content">
+                <div class="help-text">
+                    <strong>파일 업로드 방식</strong><br>
+                    • 컴퓨터에서 이미지 파일을 직접 선택<br>
+                    • Base64로 인코딩되어 HTML에 직접 포함<br>
+                    • 장점: 외부 서버 불필요<br>
+                    • 단점: 파일이 커질 수 있음 (권장 크기: 500KB 이하)
+                </div>
+            </div>
+
+            <div class="image-grid" id="image-grid">
+                <!-- 이미지 카드들이 여기 표시됨 -->
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">⚙️ 설정된 이미지 구조</div>
+            <div class="code-block" id="config-output">
+// 아직 설정된 이미지가 없습니다
+            </div>
+            <button class="copy-btn" onclick="copyConfig()">설정 복사하기</button>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📝 사용 방법</div>
+            <div class="help-text">
+                <strong>1단계: 이미지 준비</strong><br>
+                • 총 5개의 일러스트를 준비하세요<br>
+                • 각 일러스트는 호감도 구간에 맞춰 배치됩니다<br><br>
+
+                <strong>2단계: 호감도 구간 설정</strong><br>
+                • 이미지 1: 호감도 20점 달성 시<br>
+                • 이미지 2: 호감도 40점 달성 시<br>
+                • 이미지 3: 호감도 60점 달성 시<br>
+                • 이미지 4: 호감도 80점 달성 시<br>
+                • 이미지 5: 호감도 100점 달성 시<br><br>
+
+                <strong>3단계: 이미지 등록</strong><br>
+                • URL 방식: 이미지 호스팅 사이트에 업로드 후 URL 입력<br>
+                • 파일 업로드: 직접 이미지 파일 선택<br><br>
+
+                <strong>4단계: 설정 복사 및 적용</strong><br>
+                • "설정 복사하기" 버튼 클릭<br>
+                • 메인 HTML 파일의 IMAGE_CONFIG 부분에 붙여넣기<br>
+                • 완료!
+            </div>
+        </div>
+
+        <div class="export-section">
+            <button class="export-btn" onclick="generateHTMLWithImages()">
+                완성된 HTML 다운로드
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const IMAGE_SLOTS = [
+            { id: 1, threshold: 20, name: "첫 만남", description: "호감도 20점" },
+            { id: 2, threshold: 40, name: "친밀해짐", description: "호감도 40점" },
+            { id: 3, threshold: 60, name: "설레는 순간", description: "호감도 60점" },
+            { id: 4, threshold: 80, name: "깊어지는 관계", description: "호감도 80점" },
+            { id: 5, threshold: 100, name: "완전한 신뢰", description: "호감도 100점" }
+        ];
+
+        let imageData = {};
+        let currentTab = 'url';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (tab === 'url') {
+                document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+                document.getElementById('url-tab').classList.add('active');
+            } else {
+                document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+                document.getElementById('upload-tab').classList.add('active');
+            }
+            
+            renderImageGrid();
+        }
+
+        function renderImageGrid() {
+            const grid = document.getElementById('image-grid');
+            grid.innerHTML = '';
+
+            IMAGE_SLOTS.forEach(slot => {
+                const card = document.createElement('div');
+                card.className = 'image-card';
+                
+                const hasImage = imageData[slot.id];
+                
+                card.innerHTML = `
+                    <div class="image-preview">
+                        ${hasImage ? 
+                            `<img src="${imageData[slot.id]}" alt="Image ${slot.id}">` :
+                            `<div class="image-placeholder">🔒</div>`
+                        }
+                    </div>
+                    <div class="image-info">
+                        <div class="image-label">${slot.name}</div>
+                        <div class="image-value">${slot.description}</div>
+                    </div>
+                    ${currentTab === 'url' ? `
+                        <input 
+                            type="text" 
+                            class="input-field" 
+                            placeholder="이미지 URL 입력"
+                            value="${hasImage || ''}"
+                            onchange="updateImageURL(${slot.id}, this.value)"
+                        >
+                    ` : `
+                        <input 
+                            type="file" 
+                            accept="image/*" 
+                            style="display: none;" 
+                            id="file-${slot.id}"
+                            onchange="handleFileUpload(${slot.id}, this)"
+                        >
+                        <button class="upload-btn" onclick="document.getElementById('file-${slot.id}').click()">
+                            ${hasImage ? '이미지 변경' : '이미지 업로드'}
+                        </button>
+                    `}
+                    ${hasImage ? `
+                        <button class="remove-btn" onclick="removeImage(${slot.id})">제거</button>
+                    ` : ''}
+                `;
+                
+                grid.appendChild(card);
+            });
+
+            updateConfigOutput();
+        }
+
+        function updateImageURL(id, url) {
+            if (url.trim()) {
+                imageData[id] = url.trim();
+            } else {
+                delete imageData[id];
+            }
+            renderImageGrid();
+        }
+
+        function handleFileUpload(id, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (file.size > 1024 * 1024) { // 1MB
+                alert('파일 크기가 너무 큽니다. 1MB 이하의 이미지를 사용해주세요.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imageData[id] = e.target.result;
+                renderImageGrid();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage(id) {
+            delete imageData[id];
+            renderImageGrid();
+        }
+
+        function updateConfigOutput() {
+            const config = {
+                images: IMAGE_SLOTS.map(slot => ({
+                    id: slot.id,
+                    threshold: slot.threshold,
+                    name: slot.name,
+                    url: imageData[slot.id] || null
+                }))
+            };
+
+            const output = document.getElementById('config-output');
+            output.textContent = `const IMAGE_CONFIG = ${JSON.stringify(config, null, 2)};`;
+        }
+
+        function copyConfig() {
+            const output = document.getElementById('config-output');
+            navigator.clipboard.writeText(output.textContent).then(() => {
+                alert('설정이 클립보드에 복사되었습니다!');
+            });
+        }
+
+        function generateHTMLWithImages() {
+            if (Object.keys(imageData).length === 0) {
+                alert('먼저 이미지를 등록해주세요!');
+                return;
+            }
+
+            const config = {
+                images: IMAGE_SLOTS.map(slot => ({
+                    id: slot.id,
+                    threshold: slot.threshold,
+                    name: slot.name,
+                    url: imageData[slot.id] || null
+                }))
+            };
+
+            // 메인 HTML 생성 (간단한 버전)
+            const html = `
+<!-- KIND CAT 이미지 설정 -->
+<!-- 이 부분을 메인 HTML의 <script> 태그 안에 추가하세요 -->
+
+const IMAGE_CONFIG = ${JSON.stringify(config, null, 2)};
+
+// 갤러리에서 이미지 표시 함수 수정
+function renderGallery() {
+    const gallery = document.getElementById('gallery-container');
+    gallery.innerHTML = '';
+    
+    IMAGE_CONFIG.images.forEach(img => {
+        const isUnlocked = affectionScore >= img.threshold;
+        const slot = document.createElement('div');
+        slot.className = \`image-slot \${isUnlocked ? 'unlocked' : 'locked'}\`;
+        
+        if (isUnlocked && img.url) {
+            slot.innerHTML = \`<img src="\${img.url}" alt="\${img.name}">\`;
+        } else {
+            slot.innerHTML = \`
+                <div class="lock-icon">🔒</div>
+                <div class="unlock-text">\${img.threshold}점</div>
+            \`;
+        }
+        
+        gallery.appendChild(slot);
+    });
+}
+`;
+
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'kind-cat-image-config.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            alert('설정 파일이 다운로드되었습니다!\n\n메인 HTML 파일에 이 내용을 추가하세요.');
+        }
+
+        // 초기 렌더링
+        renderImageGrid();
+    </script>
+</body>
+</html>
